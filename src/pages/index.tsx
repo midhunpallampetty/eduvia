@@ -30,6 +30,10 @@ export default function LandingPage() {
       
   <title>Eduvia Space - Learn JavaScript, Python, React & More</title>
   <meta
+    name="google-site-verification"
+    content="your_verification_code_here"
+/>
+  <meta
     name="description"
     content="Eduvia Space is your futuristic learning hub for mastering JavaScript, Python, React, and modern technologies. Inspired by JavaTpoint & W3Schools — but better, sleeker, and smarter."
   />
