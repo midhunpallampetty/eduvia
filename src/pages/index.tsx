@@ -27,6 +27,39 @@ const categories = [
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-slate-100 p-6 font-sans">
+      
+  <title>Eduvia Space - Learn JavaScript, Python, React & More</title>
+  <meta
+    name="description"
+    content="Eduvia Space is your futuristic learning hub for mastering JavaScript, Python, React, and modern technologies. Inspired by JavaTpoint & W3Schools — but better, sleeker, and smarter."
+  />
+  <meta
+    name="keywords"
+    content="JavaScript tutorials, Python guides, React learning, web development, Eduvia Space, programming tutorials, coding courses, frontend, backend"
+  />
+  <meta name="author" content="Eduvia Space Team" />
+  <meta name="robots" content="index, follow" />
+
+  {/* Open Graph Meta Tags */}
+  <meta property="og:title" content="Eduvia Space - Futuristic Coding Tutorials" />
+  <meta
+    property="og:description"
+    content="Explore beautiful, modern tutorials on JavaScript, Python, React, and more. Learn. Code. Grow with Eduvia Space."
+  />
+  <meta property="og:image" content="/preview.png" /> {/* Replace with actual image path */}
+  <meta property="og:url" content="https://www.eduviaspace.com" /> {/* Replace with your live URL */}
+  <meta property="og:type" content="website" />
+
+  {/* Twitter Card Meta Tags */}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Eduvia Space - Futuristic Coding Tutorials" />
+  <meta
+    name="twitter:description"
+    content="Master the latest in web development with Eduvia Space. From JavaScript to Python and beyond — level up your coding game."
+  />
+  <meta name="twitter:image" content="/preview.png" /> {/* Replace with actual image path */}
+
+
       <header className="text-center py-12">
         <h1 className="text-4xl md:text-6xl font-bold text-gray-800 mb-4">
           Learn. Code. Grow.
