@@ -29,7 +29,7 @@ export default function Navbar() {
             <Link href="/tutorials/python" className="text-gray-300 hover:text-white transition-colors">
               Python
             </Link>
-            <Link href="/tutorials/javascript" className="text-gray-300 hover:text-white transition-colors">
+            <Link href="/javascript" className="text-gray-300 hover:text-white transition-colors">
               JavaScript
             </Link>
             <Link href="/tutorials/java" className="text-gray-300 hover:text-white transition-colors">
