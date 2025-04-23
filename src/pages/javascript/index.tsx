@@ -3,7 +3,7 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import dbConnect from '../../lib/mongodb';
 import Tutorial from '@/models/Tutorial';
-
+import ReactMarkdown from 'react-markdown';
 const JavaScriptTutorialPage = ({ tutorials }: any) => {
   const Navbar = dynamic(() => import('../components/Navbar'), { ssr: true });
 
@@ -18,7 +18,7 @@ const JavaScriptTutorialPage = ({ tutorials }: any) => {
 
   const sortedTutorials = tutorials.sort((a: any, b: any) => a.order - b.order);
   const selectedTutorial = sortedTutorials.find((t: any) => t.slug === selectedSlug);
-  
+
   return (
     <>
       <Navbar />
@@ -33,11 +33,10 @@ const JavaScriptTutorialPage = ({ tutorials }: any) => {
               <button
                 key={tutorial._id}
                 onClick={() => handleSelect(tutorial.slug)}
-                className={`w-full text-left group block p-3 rounded-lg transition-all duration-200 ${
-                  selectedSlug === tutorial.slug
+                className={`w-full text-left group block p-3 rounded-lg transition-all duration-200 ${selectedSlug === tutorial.slug
                     ? 'bg-green-50 border-l-4 border-green-500 text-green-600'
                     : 'hover:bg-gray-50 hover:border-l-4 hover:border-green-300'
-                }`}
+                  }`}
               >
                 <span className="group-hover:translate-x-2 transition-transform">
                   {tutorial.title}
@@ -59,9 +58,10 @@ const JavaScriptTutorialPage = ({ tutorials }: any) => {
               <h2 className="text-3xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">
                 {selectedTutorial.title}
               </h2>
-              <p className="text-lg text-gray-700 leading-relaxed whitespace-pre-line">
-                {selectedTutorial.content}
-              </p>
+              <div className="prose prose-lg text-gray-700 max-w-none">
+                <ReactMarkdown>{selectedTutorial.content}</ReactMarkdown>
+              </div>
+
 
               <div className="bg-gray-900 text-green-400 rounded-lg p-4 relative shadow-inner">
                 <div className="absolute top-2 right-4 text-sm text-green-500 font-semibold">
