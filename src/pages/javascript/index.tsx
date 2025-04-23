@@ -16,8 +16,9 @@ const JavaScriptTutorialPage = ({ tutorials }: any) => {
     }
   };
 
-  const selectedTutorial = tutorials.find((t: any) => t.slug === selectedSlug);
-
+  const sortedTutorials = tutorials.sort((a: any, b: any) => a.order - b.order);
+  const selectedTutorial = sortedTutorials.find((t: any) => t.slug === selectedSlug);
+  
   return (
     <>
       <Navbar />
