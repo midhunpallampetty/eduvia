@@ -24,6 +24,8 @@ const JavaScriptTutorialPage = ({ tutorials }: any) => {
       <Navbar />
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 text-gray-800 font-inter flex">
         {/* Sidebar */}
+        <link rel="canonical" href="https://eduvia.space/javascript-compiler" />
+
         <aside className="w-64 h-screen fixed bg-white shadow-xl p-6 overflow-y-auto">
           <h2 className="text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-600">
             JS Tutorial
