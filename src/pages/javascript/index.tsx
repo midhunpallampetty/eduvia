@@ -34,8 +34,8 @@ const JavaScriptTutorialPage = ({ tutorials }: any) => {
                 key={tutorial._id}
                 onClick={() => handleSelect(tutorial.slug)}
                 className={`w-full text-left group block p-3 rounded-lg transition-all duration-200 ${selectedSlug === tutorial.slug
-                    ? 'bg-green-50 border-l-4 border-green-500 text-green-600'
-                    : 'hover:bg-gray-50 hover:border-l-4 hover:border-green-300'
+                  ? 'bg-green-50 border-l-4 border-green-500 text-green-600'
+                  : 'hover:bg-gray-50 hover:border-l-4 hover:border-green-300'
                   }`}
               >
                 <span className="group-hover:translate-x-2 transition-transform">
@@ -65,7 +65,14 @@ const JavaScriptTutorialPage = ({ tutorials }: any) => {
 
               <div className="bg-gray-900 text-green-400 rounded-lg p-4 relative shadow-inner">
                 <div className="absolute top-2 right-4 text-sm text-green-500 font-semibold">
-                  Try it Yourself →
+                  <button
+                    onClick={() =>
+                      window.open(`/javascript-compiler?code=${encodeURIComponent(selectedTutorial.codeExample)}`, '_blank')
+                    }
+                    className="hover:underline"
+                  >
+                    Try it Yourself →
+                  </button>
                 </div>
                 <pre className="overflow-x-auto whitespace-pre-wrap break-words text-sm">
                   <code>{selectedTutorial.codeExample}</code>
