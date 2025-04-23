@@ -2,7 +2,6 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Code2, BookOpen, School, Rocket, Globe, Users, Clock, Award } from "lucide-react";
 import dynamic from "next/dynamic";
-import { SpeedInsights } from "@vercel/speed-insights/next"
 // Animation variants
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
