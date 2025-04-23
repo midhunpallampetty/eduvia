@@ -55,12 +55,12 @@ export default function CodeEditor() {
         <title>Free Online JavaScript Compiler & Code Runner | Run JS Code Instantly | JS Compiler</title>
         <meta name="description" content="Free online JavaScript compiler and code runner. Compile, run, and debug JS code instantly. No downloads, no setup." />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="canonical" href="https://your-domain.com/code-editor" />
+        <link rel="canonical" href="https://eduvia.space/javascript-compiler" />
         <meta property="og:title" content="Free JavaScript Compiler & Code Editor | Run JS Instantly" />
         <meta property="og:description" content="Compile, run, and debug JavaScript code instantly with our free online compiler. No downloads required." />
         <meta property="og:image" content="/social-image.png" />
         <meta property="og:site_name" content="JS Compiler" />
-        <meta property="og:url" content="https://your-domain.com/code-editor" />
+        <meta property="og:url" content="https://eduvia.space/javascript-compiler" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
