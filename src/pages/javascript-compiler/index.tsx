@@ -4,7 +4,13 @@ import Head from "next/head";
 import CodeMirrorEditor from "../components/CodeMirrorEditor";
 
 export default function CodeEditor() {
-  const [code, setCode] = useState(`console.log("Hello, world!")`);
+  const [code, setCode] = useState(`
+    // Online JavaScript Editor | Free Online JavaScript Compiler
+    // Write, edit, and run your code online using our IDE
+    
+    console.log("Hello, world!");
+    `);
+    
   const [output, setOutput] = useState("");
   const [isRunning, setIsRunning] = useState(false);
   const router = useRouter();
@@ -79,7 +85,7 @@ export default function CodeEditor() {
       <nav className="bg-white dark:bg-gray-900 text-gray-800 dark:text-white p-4 flex items-center justify-between shadow-md">
         <div className="flex items-center gap-3 animate-fade-in-right">
           <img src="/logo.png" alt="JS Compiler Logo" className="w-26 h-16 transition-transform hover:scale-105" />
-          <h1 className="text-xl font-bold">JS Compiler</h1>
+          <h1 className="text-xl font-bold">Online JavaSript Compiler</h1>
         </div>
         <div className="flex gap-3">
           <button

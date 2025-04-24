@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url><loc>https://www.eduvia.space</loc><lastmod>2025-04-23T17:31:53.559Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.eduvia.space/components/CodeMirrorEditor</loc><lastmod>2025-04-23T17:31:53.559Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.eduvia.space/components/Navbar</loc><lastmod>2025-04-23T17:31:53.559Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.eduvia.space/javascript</loc><lastmod>2025-04-23T17:31:53.559Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.eduvia.space/javascript-compiler</loc><lastmod>2025-04-23T17:31:53.559Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.eduvia.space</loc><lastmod>2025-04-24T12:37:11.769Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.eduvia.space/components/CodeMirrorEditor</loc><lastmod>2025-04-24T12:37:11.770Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.eduvia.space/components/Navbar</loc><lastmod>2025-04-24T12:37:11.770Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.eduvia.space/javascript</loc><lastmod>2025-04-24T12:37:11.770Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.eduvia.space/javascript-compiler</loc><lastmod>2025-04-24T12:37:11.770Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 <url><loc>https://www.eduvia.space/javascript</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
 <url><loc>https://www.eduvia.space/javascript-compiler</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
 </urlset>
