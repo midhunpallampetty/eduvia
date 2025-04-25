@@ -8,6 +8,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <meta name="msvalidate.01" content="0604F6F0CDB312F1136B972E1E631B46" />
+        <meta name="yandex-verification" content="00987a11502995ad" />
       </Head>
 
       <Component {...pageProps} />
