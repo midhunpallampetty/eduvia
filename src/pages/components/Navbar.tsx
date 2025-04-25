@@ -9,7 +9,7 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-gray-800 shadow-lg">
+    <nav className="bg-gray-2500 shadow-lg">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -65,7 +65,7 @@ export default function Navbar() {
             <Link href="/tutorials/python" className="block text-gray-300 hover:text-white px-4">
               Python
             </Link>
-            <Link href="/tutorials/javascript" className="block text-gray-300 hover:text-white px-4">
+            <Link href="/javascript" className="block text-gray-300 hover:text-white px-4">
               JavaScript
             </Link>
             <Link href="/tutorials/java" className="block text-gray-300 hover:text-white px-4">
