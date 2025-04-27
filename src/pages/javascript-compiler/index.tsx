@@ -10,7 +10,7 @@ export default function CodeEditor() {
     
     console.log("Hello, world!");
     `);
-
+    
   const [output, setOutput] = useState("");
   const [isRunning, setIsRunning] = useState(false);
   const router = useRouter();
@@ -87,7 +87,7 @@ export default function CodeEditor() {
         <div className="flex items-center gap-3 animate-fade-in-right">
           <img src="/logo.png" alt="Online JavaScript Compiler Logo" className="w-26 h-16 transition-transform hover:scale-105" />
           <h1 className="text-xl font-bold">Online JavaSript Compiler</h1>
-        </div>
+          </div>
         <div className="flex gap-3">
           <button
             onClick={copyShareableLink}
@@ -134,14 +134,14 @@ export default function CodeEditor() {
               Clear
             </button>
           </div>
-          <pre
-            key={output}
-            className={`flex-1 bg-gray-100 dark:bg-gray-900 p-2 rounded whitespace-pre-wrap overflow-auto transition-all duration-300 
+      <pre
+  key={output}
+  className={`flex-1 bg-gray-100 dark:bg-gray-900 p-2 rounded whitespace-pre-wrap overflow-auto transition-all duration-300 
     ${output.startsWith("Error:") ? "text-red-400 animate-shake" : "text-green-400 animate-fade-in"}
     ${!output ? "text-gray-400 opacity-50" : ""}`}
-          >
-            {output || "// Output will appear here"}
-          </pre>
+>
+  {output || "// Output will appear here"}
+</pre>
 
         </section>
       </main>
