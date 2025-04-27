@@ -10,7 +10,7 @@ export default function CodeEditor() {
     
     console.log("Hello, world!");
     `);
-    
+
   const [output, setOutput] = useState("");
   const [isRunning, setIsRunning] = useState(false);
   const router = useRouter();
@@ -85,9 +85,9 @@ export default function CodeEditor() {
       {/* Navigation */}
       <nav className="bg-white dark:bg-gray-900 text-gray-800 dark:text-white p-4 flex items-center justify-between shadow-md">
         <div className="flex items-center gap-3 animate-fade-in-right">
-          <img src="/logo.png" alt="JS Compiler Logo" className="w-26 h-16 transition-transform hover:scale-105" />
+          <img src="/logo.png" alt="Online JavaScript Compiler Logo" className="w-26 h-16 transition-transform hover:scale-105" />
           <h1 className="text-xl font-bold">Online JavaSript Compiler</h1>
-          </div>
+        </div>
         <div className="flex gap-3">
           <button
             onClick={copyShareableLink}
@@ -137,47 +137,17 @@ export default function CodeEditor() {
           <pre
             key={output}
             className={`flex-1 bg-gray-100 dark:bg-gray-900 p-2 rounded whitespace-pre-wrap overflow-auto transition-all duration-300 
-              ${output.startsWith("Error:") ? "text-red-400 animate-shake" : "text-green-400 animate-fade-in"}`}
+    ${output.startsWith("Error:") ? "text-red-400 animate-shake" : "text-green-400 animate-fade-in"}
+    ${!output ? "text-gray-400 opacity-50" : ""}`}
           >
             {output || "// Output will appear here"}
           </pre>
+
         </section>
       </main>
 
       {/* Sticky Footer */}
-      <footer className="bg-gray-50 dark:bg-gray-800 hidden text-gray-800 dark:text-white border-t dark:border-t-gray-700 py-8">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-8 text-center animate-fade-in-up">
-            <h3 className="text-2xl font-semibold">What is JS Compiler?</h3>
-            <p className="mt-2 text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              JS Compiler is a free online JavaScript compiler and code runner. Write, compile, and execute JavaScript code instantly without any downloads or setup. 
-              Perfect for testing code snippets, learning JavaScript, or debugging on the fly.
-            </p>
-          </div>
 
-          <div className="animate-fade-in-up">
-            <h3 className="text-2xl font-semibold text-center mb-4">Features</h3>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-gray-600 dark:text-gray-300 text-sm sm:text-base max-w-4xl mx-auto">
-              {[
-                "Real-time code execution",
-                "Code highlighting & formatting",
-                "Error highlighting",
-                "Shareable code links",
-                "Dark mode support",
-                "Mobile responsive design",
-              ].map((feature, i) => (
-                <li key={i} className="flex items-center gap-2">
-                  <span className="text-green-500 text-lg">✓</span> {feature}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="mt-10 text-center text-sm text-gray-500 dark:text-gray-400 animate-fade-in-up">
-            &copy; {new Date().getFullYear()} JS Compiler. All rights reserved.
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
