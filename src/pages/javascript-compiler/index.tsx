@@ -59,8 +59,9 @@ export default function CodeEditor() {
     <div className="min-h-screen flex flex-col">
       <Head>
         <title>Free Online JavaScript Compiler & Code Runner | Run JS Code Instantly | JS Compiler</title>
-        <meta name="description" content="Free online JavaScript compiler and code runner. Compile, run, and debug JS code instantly. No downloads, no setup." />
+        <meta name="description" content="Use our free online JavaScript compiler to compile, run, and debug JS code instantly. Best JS compiler online — no downloads, no setup needed." />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="keywords" content="online javascript compiler, online js compiler, javascript online compiler, javascript compiler online, js online compiler, run js code online,js editr online ,javascript runner, online javascript runner,javascript ide online,javascript code runner,free javascript editor" />
         <link rel="canonical" href="https://eduvia.space/javascript-compiler" />
         <meta property="og:title" content="Free JavaScript Compiler & Code Editor | Run JS Instantly" />
         <meta property="og:description" content="Compile, run, and debug JavaScript code instantly with our free online compiler. No downloads required." />
@@ -86,7 +87,7 @@ export default function CodeEditor() {
         <div className="flex items-center gap-3 animate-fade-in-right">
           <img src="/logo.png" alt="JS Compiler Logo" className="w-26 h-16 transition-transform hover:scale-105" />
           <h1 className="text-xl font-bold">Online JavaSript Compiler</h1>
-        </div>
+          </div>
         <div className="flex gap-3">
           <button
             onClick={copyShareableLink}
