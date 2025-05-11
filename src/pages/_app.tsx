@@ -7,6 +7,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
+      <link rel="icon" href="/icon.png" />
         <meta name="msvalidate.01" content="0604F6F0CDB312F1136B972E1E631B46" />
       </Head>
 
