@@ -67,21 +67,59 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
 
   return (
     <>
-    <Head>
+<Head>
+  {/* Basic Meta Tags */}
   <title>{tutorial.title} | JavaScript Tutorial | Eduvia</title>
-  <meta name="description" content={tutorial.content.slice(0, 150) + '...'} />
-  <meta name="keywords" content={`JavaScript, ${tutorial.title}, JS tutorial, learn JavaScript`} />
-  <meta name="author" content="Eduvia Space " />
+  <meta
+    name="description"
+    content={
+      tutorial.content ||
+      `${tutorial.content.slice(0, 120).replace(/\n/g, ' ').trim()}... Learn more about ${tutorial.title} in this JavaScript tutorial.`
+    }
+  />
+  <meta
+    name="keywords"
+    content={`JavaScript, ${tutorial.title}, JS tutorial, learn JavaScript, ${tutorial.title || tutorial.title.toLowerCase().replace(/\s/g, ', ')}`}
+  />
+  <meta name="author" content='Eduvia Space' />
+  <meta charSet="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <meta property="og:title" content={tutorial.title} />
-  <meta property="og:description" content={tutorial.content.slice(0, 150) + '...'} />
+  {/* Canonical URL */}
+  <link rel="canonical" href={`https://eduvia.space/javascript/${tutorial.slug}`} />
+
+  {/* Open Graph Tags */}
+  <meta property="og:title" content={`${tutorial.title} | JavaScript Tutorial`} />
+  <meta
+    property="og:description"
+    content={
+      tutorial.codeExample ||
+      `${tutorial.content.slice(0, 120).replace(/\n/g, ' ').trim()}... Learn more about ${tutorial.title}.`
+    }
+  />
   <meta property="og:type" content="article" />
   <meta property="og:url" content={`https://eduvia.space/javascript/${tutorial.slug}`} />
-  <meta property="og:site_name" content="Eduvia" />
 
+  <meta property="og:image:alt" content={`Illustration for ${tutorial.title} JavaScript tutorial`} />
+  <meta property="og:site_name" content="Eduvia" />
+  <meta property="og:locale" content="en_US" />
+
+  {/* Twitter Card Tags */}
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={tutorial.title} />
-  <meta name="twitter:description" content={tutorial.content.slice(0, 150) + '...'} />
+  <meta name="twitter:title" content={`${tutorial.title} | JavaScript Tutorial`} />
+  <meta
+    name="twitter:description"
+    content={
+      tutorial.content ||
+      `${tutorial.content.slice(0, 120).replace(/\n/g, ' ').trim()}... Learn more about ${tutorial.title}.`
+    }
+  />
+  <meta
+    name="twitter:image"
+    content= 'https://eduvia.space/images/javascript-tutorial.jpg'
+  />
+  <meta name="twitter:image:alt" content={`Illustration for ${tutorial.title} JavaScript tutorial`} />
+  <meta name="twitter:site" content="@EduviaSpace" /> {/* Replace with actual Twitter handle */}
 </Head>
 
       <Navbar />
