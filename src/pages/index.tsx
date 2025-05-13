@@ -4,7 +4,7 @@ import { Code2, BookOpen, School, Rocket, Globe, Users, Clock, Award, ChevronLef
 import dynamic from "next/dynamic";
 import Head from "next/head";
 
-const MonacoEditor = dynamic(() => import('@monaco-editor/react'), { ssr: false });
+const MonacoEditor = dynamic(() => import('@monaco-editor/react'), { ssr: false }); //test
 const Navbar = dynamic(() => import('./components/Navbar'), { ssr: true });
 
 const fadeInUp = {
