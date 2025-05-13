@@ -120,6 +120,35 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
   />
   <meta name="twitter:image:alt" content={`Illustration for ${tutorial.title} JavaScript tutorial`} />
   <meta name="twitter:site" content="@EduviaSpace" /> {/* Replace with actual Twitter handle */}
+  <script type="application/ld+json">
+  {JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://eduvia.space/javascript/${tutorial.slug}`
+    },
+    "headline": `${tutorial.title} | JavaScript Tutorial`,
+    "description": tutorial.content.slice(0, 150).replace(/\n/g, ' ').trim(),
+    "image": "https://eduvia.space/images/javascript-tutorial.jpg", // Use dynamic if per-article image exists
+    "author": {
+      "@type": "Organization",
+      "name": "Eduvia Space",
+      "url": "https://eduvia.space"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Eduvia Space",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://eduvia.space/logo.png" // Replace with your logo
+      }
+    },
+    "datePublished": new Date().toISOString(), // Ideally store and use real publish date
+    "dateModified": new Date().toISOString()
+  })}
+</script>
+
 </Head>
 
       <Navbar />
