@@ -69,7 +69,8 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
     <>
 <Head>
   {/* Basic Meta Tags */}
-  <title>{tutorial.title} | JavaScript Tutorial | Eduvia</title>
+  
+  <title>What is {tutorial.title}? Learn with Examples | JavaScript Tutorial</title>
   <meta
     name="description"
     content={
