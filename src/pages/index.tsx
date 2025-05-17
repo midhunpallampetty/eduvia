@@ -360,7 +360,7 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
-            <p>© {new Date().getFullYear()} Eduvia Space. All rights reserved.Made In India</p>
+            <p>© {new Date().getFullYear()} Eduvia Space. All rights reserved</p>
           </div>
         </footer>
       </main>
