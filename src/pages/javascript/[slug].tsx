@@ -290,7 +290,8 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   await dbConnect();
-  const tutorials = await Tutorial.find().select('slug').lean();
+  const tutorials = await  Tutorial.find().sort({order:-1});
+  console.log(tutorials,'gfgvh')
 
   const paths = tutorials.map((tutorial) => ({
     params: { slug: tutorial.slug },
@@ -305,7 +306,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   await dbConnect();
   const tutorial = await Tutorial.findOne({ slug: params?.slug }).lean();
-  const tutorials = await Tutorial.find().lean();
+  const tutorials = await Tutorial.find().sort({order:1});
+
 
   return {
     props: {
