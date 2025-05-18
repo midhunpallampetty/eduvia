@@ -155,8 +155,8 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
       <Navbar />
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 text-gray-800 font-inter flex">
         {/* Sidebar */}
-        <aside className="w-64 h-screen fixed bg-white shadow-xl p-6 overflow-y-auto">
-          <h2 className="text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-600">
+        <aside className="w-64 h-screen fixed bg-white shadow-xl p-6 overflow-y-auto scrollbar-thin scrollbar-thumb-green-400 scrollbar-track-gray-100 pb-20">
+                    <h2 className="text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-600">
             JS Tutorial
           </h2>
           <nav className="space-y-3">

@@ -69,3 +69,10 @@ body {
 .animate-fade-in {
   animation: fadeIn 0.3s ease-out;
 }
+/* In your global CSS file */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+.scrollbar-thumb-green-400 {
+  scrollbar-color: #34d399 #f3f4f6;
+}
