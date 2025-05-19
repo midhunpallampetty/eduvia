@@ -77,7 +77,7 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
       );
     
       const data = response.data;
-    
+    console.log(response,'response')
       if (!data.qnas || !Array.isArray(data.qnas)) {
         throw new Error('Invalid Q&A data format');
       }
