@@ -6,7 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Link from 'next/link';
 import Head from 'next/head';
-
+import axios from 'axios';
 interface MCQ {
   question: string;
   options: string[];
@@ -66,19 +66,24 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
     setIsLoadingQnas(true);
     setQnaError(null);
     try {
-      const response = await fetch(
+      const response = await axios.get(
         `https://eduvia.space/api/listQnA?slug=${encodeURIComponent(tutorial.slug)}`,
-        { cache: 'no-store' }
+        {
+          headers: {
+            'Cache-Control': 'no-store',
+          },
+          // You could also disable caching globally in axios, but this header is standard.
+        }
       );
-      if (!response.ok) {
-        throw new Error(`HTTP error ${response.status}`);
-      }
-      const data = await response.json();
+    
+      const data = response.data;
+    
       if (!data.qnas || !Array.isArray(data.qnas)) {
         throw new Error('Invalid Q&A data format');
       }
+    
       setQnas(data.qnas);
-    } catch (error) {
+    }  catch (error) {
       console.error('Error fetching Q&A:', error);
       setQnaError('Failed to load Q&A. Please try again later.');
     } finally {
