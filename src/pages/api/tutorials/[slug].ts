@@ -1,32 +1,35 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from '../../../lib/mongodb';
-import Tutorial from '../../../models/Tutorial';
-import { ITutorial } from '../../../models/Tutorial';
+import Tutorial, { ITutorial } from '../../../models/Tutorial';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ITutorial | { message: string }>
 ) {
+  // ✅ Only allow GET
+  if (req.method !== 'GET') {
+    return res.status(405).json({ message: 'Method Not Allowed' });
+  }
+
   await dbConnect();
-  console.log("test",typeof req.query.slug);
-  
+
   const { slug } = req.query;
-const newslug=slug?.toString()
-  if (typeof slug !== 'string') {
-    return res.status(400).json({ message: 'Invalid slug format' });
+  const newSlug = slug?.toString();
+
+  if (!newSlug) {
+    return res.status(400).json({ message: 'Missing slug parameter' });
   }
 
   try {
-    console.log("slug",newslug)
-    const tutorial = await Tutorial.findOne({ slug :newslug});
-console.log(tutorial,'data')
+    const tutorial = await Tutorial.findOne({ slug: newSlug });
+
     if (!tutorial) {
       return res.status(404).json({ message: 'Tutorial not found' });
     }
 
-    res.status(200).json(tutorial);
+    return res.status(200).json(tutorial);
   } catch (error) {
-    console.error('Fetch error:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error('Error fetching tutorial by slug:', error);
+    return res.status(500).json({ message: 'Internal server error' });
   }
 }
