@@ -6,7 +6,16 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ITutorial | { message: string }>
 ) {
-  // ✅ Only allow GET
+  // ✅ Add CORS headers
+  res.setHeader('Access-Control-Allow-Origin', 'https://www.eduvia.space');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  // ✅ Handle preflight OPTIONS request
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method !== 'GET') {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
