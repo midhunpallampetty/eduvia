@@ -67,17 +67,17 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
     setQnaError(null);
     try {
       const response = await axios.get(
-        `https://eduvia.space/api/listQnA?slug=${encodeURIComponent(tutorial.slug)}`,
+        `https://www.eduvia.space/api/listQnA?slug=${encodeURIComponent(tutorial.slug)}`,
         {
           headers: {
             'Cache-Control': 'no-store',
           },
-          // You could also disable caching globally in axios, but this header is standard.
+          withCredentials: false, // unless using cookies/session
         }
       );
     
       const data = response.data;
-    console.log(response,'response')
+    
       if (!data.qnas || !Array.isArray(data.qnas)) {
         throw new Error('Invalid Q&A data format');
       }
