@@ -67,7 +67,7 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
     setQnaError(null);
     try {
       const response = await fetch(
-        `http://localhost:3000/api/listQnA?slug=${encodeURIComponent(tutorial.slug)}`,
+        `https://eduvia.space/api/listQnA?slug=${encodeURIComponent(tutorial.slug)}`,
         { cache: 'no-store' }
       );
       if (!response.ok) {
