@@ -5,26 +5,18 @@ import { ITutorial } from '../../../models/Tutorial';
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ITutorial | { message: string }>
+  res: NextApiResponse<{ tutorial: ITutorial[] } | { message: string }>
 ) {
   await dbConnect();
-  console.log("test",typeof req.query.slug);
-  
-  const { slug } = req.query;
-const newslug=slug?.toString()
-  if (typeof slug !== 'string') {
-    return res.status(400).json({ message: 'Invalid slug format' });
-  }
 
   try {
-    console.log("slug",newslug)
-    const tutorial = await Tutorial.findOne({ slug :newslug});
-console.log(tutorial,'data')
-    if (!tutorial) {
+    const tutorial = await Tutorial.find();
+
+    if (!tutorial || tutorial.length === 0) {
       return res.status(404).json({ message: 'Tutorial not found' });
     }
 
-    res.status(200).json(tutorial);
+    res.status(200).json({ tutorial });
   } catch (error) {
     console.error('Fetch error:', error);
     res.status(500).json({ message: 'Internal server error' });

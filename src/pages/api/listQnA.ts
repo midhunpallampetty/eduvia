@@ -2,7 +2,17 @@ import { NextApiRequest, NextApiResponse } from "next";
 import dbConnect from "@/lib/mongodb";
 import QnA from "@/models/QnA";
 import Tutorial from "@/models/Tutorial";
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // Allow CORS for eduvia.space
+  res.setHeader("Access-Control-Allow-Origin", "https://eduvia.space");
+  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end(); // Preflight request
+  }
+
   if (req.method !== "GET") {
     return res.status(405).json({ message: "Method not allowed" });
   }
@@ -15,14 +25,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     await dbConnect();
-console.log(slug,'hhhh');
-let slugId=await Tutorial.find({slug:slug})
-const topicId=slugId[0]._id;
+    console.log(slug, "hhhh");
 
+    const tutorial = await Tutorial.findOne({ slug });
 
+    if (!tutorial) {
+      return res.status(404).json({ message: "Tutorial not found" });
+    }
 
-    const qnas = await QnA.find({tutorialSlug:topicId});
-console.log(qnas,'hai')
+    const topicId = tutorial._id;
+
+    const qnas = await QnA.find({ tutorialSlug: topicId });
+    console.log(qnas, "hai");
+
     return res.status(200).json({ qnas });
   } catch (error) {
     console.error("Error fetching QnAs:", error);
