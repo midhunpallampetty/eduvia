@@ -1,6 +1,4 @@
-// pages/javascript/[slug].tsx
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import dbConnect from '../../lib/mongodb';
 import Tutorial from '@/models/Tutorial';
@@ -9,13 +7,21 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import Link from 'next/link';
 import Head from 'next/head';
 
-type MCQ = {
+interface MCQ {
   question: string;
   options: string[];
   correctAnswer: number;
-};
+}
 
-type TutorialType = {
+interface QnA {
+  _id: string;
+  question: string;
+  answer: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface TutorialType {
   _id: string;
   title: string;
   slug: string;
@@ -23,203 +29,252 @@ type TutorialType = {
   codeExample: string;
   order: number;
   mcqs?: MCQ[];
-};
+}
 
 const Navbar = dynamic(() => import('../components/Navbar'), { ssr: true });
 
-type Props = {
-  tutorial: TutorialType;
+interface Props {
+  tutorial: TutorialType | null;
   tutorials: TutorialType[];
-};
+}
 
 const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
   const [mcqStates, setMcqStates] = useState<
     { selectedOption: number | null; isSubmitted: boolean }[]
   >([]);
+  const [qnas, setQnas] = useState<QnA[]>([]);
+  const [isLoadingQnas, setIsLoadingQnas] = useState<boolean>(false);
+  const [qnaError, setQnaError] = useState<string | null>(null);
+
+  // Initialize MCQ states
+  useEffect(() => {
+    if (tutorial?.mcqs && Array.isArray(tutorial.mcqs)) {
+      setMcqStates(
+        tutorial.mcqs.map(() => ({
+          selectedOption: null,
+          isSubmitted: false,
+        }))
+      );
+    } else {
+      setMcqStates([]);
+    }
+  }, [tutorial?.mcqs]);
+
+  // Fetch Q&A data
+  const fetchQnAs = useCallback(async () => {
+    if (!tutorial?.slug) return;
+    setIsLoadingQnas(true);
+    setQnaError(null);
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/listQnA?slug=${encodeURIComponent(tutorial.slug)}`,
+        { cache: 'no-store' }
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error ${response.status}`);
+      }
+      const data = await response.json();
+      if (!data.qnas || !Array.isArray(data.qnas)) {
+        throw new Error('Invalid Q&A data format');
+      }
+      setQnas(data.qnas);
+    } catch (error) {
+      console.error('Error fetching Q&A:', error);
+      setQnaError('Failed to load Q&A. Please try again later.');
+    } finally {
+      setIsLoadingQnas(false);
+    }
+  }, [tutorial?.slug]);
 
   useEffect(() => {
-    if (tutorial?.mcqs) {
-      const initialStates = tutorial.mcqs.map(() => ({
-        selectedOption: null,
-        isSubmitted: false,
-      }));
-      setMcqStates(initialStates);
-    }
-  }, [tutorial._id]);
+    fetchQnAs();
+  }, [fetchQnAs]);
 
   const handleOptionSelect = (mcqIndex: number, optionIndex: number) => {
-    const newStates = [...mcqStates];
-    newStates[mcqIndex] = {
-      ...newStates[mcqIndex],
-      selectedOption: optionIndex,
-    };
-    setMcqStates(newStates);
+    setMcqStates((prev) =>
+      prev.map((state, index) =>
+        index === mcqIndex ? { ...state, selectedOption: optionIndex } : state
+      )
+    );
   };
 
   const handleSubmitAnswer = (mcqIndex: number) => {
-    const newStates = [...mcqStates];
-    newStates[mcqIndex] = {
-      ...newStates[mcqIndex],
-      isSubmitted: true,
-    };
-    setMcqStates(newStates);
+    setMcqStates((prev) =>
+      prev.map((state, index) =>
+        index === mcqIndex ? { ...state, isSubmitted: true } : state
+      )
+    );
   };
+
+  if (!tutorial) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-red-600 text-xl">Tutorial not found.</p>
+      </div>
+    );
+  }
 
   return (
     <>
-<Head>
-  {/* Basic Meta Tags */}
-  
-  <title>What is {tutorial.title}? Learn with Examples | JavaScript Tutorial</title>
-  <meta
-    name="description"
-    content={
-      tutorial.content ||
-      `${tutorial.content.slice(0, 120).replace(/\n/g, ' ').trim()}... Learn more about ${tutorial.title} in this JavaScript tutorial.`
-    }
-  />
-  <meta
-    name="keywords"
-    content={`JavaScript, ${tutorial.title}, JS tutorial, learn JavaScript, ${tutorial.title || tutorial.title.toLowerCase().replace(/\s/g, ', ')}`}
-  />
-  <meta name="author" content='Eduvia Space' />
-  <meta charSet="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  {/* Canonical URL */}
-  <link rel="canonical" href={`https://eduvia.space/javascript/${tutorial.slug}`} />
-
-  {/* Open Graph Tags */}
-  <meta property="og:title" content={`${tutorial.title} | JavaScript Tutorial`} />
-  <meta
-    property="og:description"
-    content={
-      tutorial.codeExample ||
-      `${tutorial.content.slice(0, 120).replace(/\n/g, ' ').trim()}... Learn more about ${tutorial.title}.`
-    }
-  />
-  <meta property="og:type" content="article" />
-  <meta property="og:url" content={`https://eduvia.space/javascript/${tutorial.slug}`} />
-
-  <meta property="og:image:alt" content={`Illustration for ${tutorial.title} JavaScript tutorial`} />
-  <meta property="og:site_name" content="Eduvia" />
-  <meta property="og:locale" content="en_US" />
-
-  {/* Twitter Card Tags */}
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={`${tutorial.title} | JavaScript Tutorial`} />
-  <meta
-    name="twitter:description"
-    content={
-      tutorial.content ||
-      `${tutorial.content.slice(0, 120).replace(/\n/g, ' ').trim()}... Learn more about ${tutorial.title}.`
-    }
-  />
-  <meta
-    name="twitter:image"
-    content= 'https://eduvia.space/images/javascript-tutorial.jpg'
-  />
-  <meta name="twitter:image:alt" content={`Illustration for ${tutorial.title} JavaScript tutorial`} />
-  <meta name="twitter:site" content="@EduviaSpace" /> {/* Replace with actual Twitter handle */}
-  <script type="application/ld+json">
-  {JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": `https://eduvia.space/javascript/${tutorial.slug}`
-    },
-    "headline": `${tutorial.title} | JavaScript Tutorial`,
-    "description": tutorial.content.slice(0, 150).replace(/\n/g, ' ').trim(),
-    "image": "https://eduvia.space/images/javascript-tutorial.jpg", // Use dynamic if per-article image exists
-    "author": {
-      "@type": "Organization",
-      "name": "Eduvia Space",
-      "url": "https://eduvia.space"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Eduvia Space",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://eduvia.space/logo.png" // Replace with your logo
-      }
-    },
-    "datePublished": new Date().toISOString(), // Ideally store and use real publish date
-    "dateModified": new Date().toISOString()
-  })}
-</script>
-
-</Head>
+      <Head>
+        <title>{`${tutorial.title} | JavaScript Tutorial`}</title>
+        <meta
+          name="description"
+          content={
+            tutorial.content
+              ? `${tutorial.content.slice(0, 120).replace(/\n/g, ' ').trim()}...`
+              : `Learn about ${tutorial.title} in this JavaScript tutorial.`
+          }
+        />
+        <meta
+          name="keywords"
+          content={`JavaScript, ${tutorial.title}, JS tutorial, learn JavaScript, ${tutorial.title
+            .toLowerCase()
+            .replace(/\s/g, ', ')}`}
+        />
+        <meta name="author" content="Eduvia Space" />
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="canonical" href={`https://eduvia.space/javascript/${tutorial.slug}`} />
+        <meta property="og:title" content={`${tutorial.title} | JavaScript Tutorial`} />
+        <meta
+          property="og:description"
+          content={
+            tutorial.content
+              ? `${tutorial.content.slice(0, 120).replace(/\n/g, ' ').trim()}...`
+              : `Learn about ${tutorial.title}.`
+          }
+        />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://eduvia.space/javascript/${tutorial.slug}`} />
+        <meta
+          property="og:image"
+          content="https://eduvia.space/images/javascript-tutorial.jpg"
+        />
+        <meta
+          property="og:image:alt"
+          content={`Illustration for ${tutorial.title} JavaScript tutorial`}
+        />
+        <meta property="og:site_name" content="Eduvia" />
+        <meta property="og:locale" content="en_US" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${tutorial.title} | JavaScript Tutorial`} />
+        <meta
+          name="twitter:description"
+          content={
+            tutorial.content
+              ? `${tutorial.content.slice(0, 120).replace(/\n/g, ' ').trim()}...`
+              : `Learn about ${tutorial.title}.`
+          }
+        />
+        <meta
+          name="twitter:image"
+          content="https://eduvia.space/images/javascript-tutorial.jpg"
+        />
+        <meta
+          name="twitter:image:alt"
+          content={`Illustration for ${tutorial.title} JavaScript tutorial`}
+        />
+        <meta name="twitter:site" content="@EduviaSpace" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Article',
+              mainEntityOfPage: {
+                '@type': 'WebPage',
+                '@id': `https://eduvia.space/javascript/${tutorial.slug}`,
+              },
+              headline: `${tutorial.title} | JavaScript Tutorial`,
+              description: tutorial.content
+                ? tutorial.content.slice(0, 150).replace(/\n/g, ' ').trim()
+                : '',
+              image: 'https://eduvia.space/images/javascript-tutorial.jpg',
+              author: {
+                '@type': 'Organization',
+                name: 'Eduvia Space',
+                url: 'https://eduvia.space',
+              },
+              publisher: {
+                '@type': 'Organization',
+                name: 'Eduvia Space',
+                logo: {
+                  '@type': 'ImageObject',
+                  url: 'https://eduvia.space/logo.png',
+                },
+              },
+              datePublished: new Date().toISOString(),
+              dateModified: new Date().toISOString(),
+            }),
+          }}
+        />
+      </Head>
 
       <Navbar />
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 text-gray-800 font-inter flex">
-        {/* Sidebar */}
-        <aside className="w-64 h-screen fixed bg-white shadow-xl p-6 overflow-y-auto scrollbar-thin scrollbar-thumb-green-400 scrollbar-track-gray-100 pb-20">
-                    <h2 className="text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-600">
+        <aside className="w-64 h-screen fixed bg-white shadow-xl p-6 overflow-y-auto scrollbar-thin scrollbar-thumb-green-400 scrollbar-track-gray-100">
+          <h2 className="text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-600">
             JS Tutorial
           </h2>
           <nav className="space-y-3">
-          {tutorials.map((tut) => (
-  <Link key={tut._id} href={`/javascript/${tut.slug}`} passHref>
-    <div
-      className={`block p-3 rounded-lg transition-all duration-200 ${
-        tut.slug === tutorial.slug
-          ? 'bg-green-50 border-l-4 border-green-500 text-green-600'
-          : 'hover:bg-gray-50 hover:border-l-4 hover:border-green-300'
-      }`}
-    >
-      {tut.title}
-    </div>
-  </Link>
-))}
-
+            {tutorials.map((tut) => (
+              <Link key={tut._id} href={`/javascript/${tut.slug}`} passHref>
+                <div
+                  className={`block p-3 rounded-lg transition-all duration-200 ${
+                    tut.slug === tutorial.slug
+                      ? 'bg-green-50 border-l-4 border-green-500 text-green-600'
+                      : 'hover:bg-gray-50 hover:border-l-4 hover:border-green-300'
+                  }`}
+                >
+                  {tut.title}
+                </div>
+              </Link>
+            ))}
           </nav>
         </aside>
 
-        {/* Main content */}
         <main className="ml-64 w-full p-10 space-y-14">
-          <h1 className="text-4xl font-bold mb-8 animate-fadeInDown">
+          <h1 className="text-4xl font-bold mb-8">
             JavaScript Tutorial <span className="ml-4 text-green-500 text-3xl">✦</span>
           </h1>
 
-          <section className="space-y-6 bg-white p-6 rounded-xl shadow-md animate-fadeInUp">
+          <section className="space-y-6 bg-white p-8 rounded-xl shadow-md">
             <h2 className="text-3xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">
               {tutorial.title}
             </h2>
 
-            {/* Markdown content */}
             <div className="prose prose-lg text-gray-700 max-w-none">
-              <ReactMarkdown>{tutorial.content}</ReactMarkdown>
+              <ReactMarkdown>{tutorial.content || 'No content available.'}</ReactMarkdown>
             </div>
 
-            {/* Code example */}
-            <div className="bg-gray-900 text-green-400 rounded-lg p-4 relative shadow-inner">
-              <div className="absolute top-2 right-4 text-sm text-green-500 font-semibold">
-                <button
-                  onClick={() =>
-                    window.open(
-                      `/javascript-compiler?code=${encodeURIComponent(tutorial.codeExample)}`,
-                      '_blank'
-                    )
-                  }
-                  className="hover:underline"
-                >
-                  Try it Yourself →
-                </button>
+            {tutorial.codeExample && (
+              <div className="bg-gray-900 text-green-400 rounded-lg p-4 relative shadow-inner">
+                <div className="absolute top-2 right-4 text-sm text-green-500 font-semibold">
+                  <button
+                    onClick={() =>
+                      window.open(
+                        `/javascript-compiler?code=${encodeURIComponent(tutorial.codeExample)}`,
+                        '_blank'
+                      )
+                    }
+                    className="hover:underline"
+                  >
+                    Try it Yourself →
+                  </button>
+                </div>
+                <pre className="overflow-x-auto whitespace-pre-wrap break-words text-sm">
+                  <code>{tutorial.codeExample}</code>
+                </pre>
               </div>
-              <pre className="overflow-x-auto whitespace-pre-wrap break-words text-sm">
-                <code>{tutorial.codeExample}</code>
-              </pre>
-            </div>
+            )}
 
-            {/* MCQs */}
-            {(tutorial.mcqs ?? []).length> 0 && (
+            {tutorial.mcqs?.length ? (
               <div className="mt-12 space-y-8">
                 <h3 className="text-2xl font-bold text-gray-800 border-b pb-2">
                   Test Your Knowledge
                 </h3>
-                {Array.isArray(tutorial.mcqs) && tutorial.mcqs.map((mcq, mcqIndex) => {
+                {tutorial.mcqs.map((mcq, mcqIndex) => {
                   const currentState = mcqStates[mcqIndex] || {
                     selectedOption: null,
                     isSubmitted: false,
@@ -242,8 +297,7 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
                                 ? 'bg-green-50 border-2 border-green-500'
                                 : 'border border-gray-200 hover:border-green-300'
                             } ${
-                              currentState.isSubmitted &&
-                              optionIndex === mcq.correctAnswer
+                              currentState.isSubmitted && optionIndex === mcq.correctAnswer
                                 ? 'bg-green-100 border-green-600'
                                 : ''
                             }`}
@@ -253,8 +307,6 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
                           </button>
                         ))}
                       </div>
-
-                      {/* Submit or feedback */}
                       {!currentState.isSubmitted ? (
                         <button
                           onClick={() => handleSubmitAnswer(mcqIndex)}
@@ -266,9 +318,7 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
                       ) : (
                         <div
                           className={`mt-4 p-3 rounded-lg ${
-                            isCorrect
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-red-100 text-red-800'
+                            isCorrect ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                           }`}
                         >
                           {isCorrect
@@ -280,7 +330,32 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
                   );
                 })}
               </div>
-            )}
+            ) : null}
+
+            <div className="mt-12 space-y-8">
+              <h3 className="text-2xl font-bold text-gray-800 border-b pb-2">
+                Questions & Answers Related 
+              </h3>
+              {isLoadingQnas ? (
+                <div className="text-gray-600">Loading Q&A...</div>
+              ) : qnaError ? (
+                <div className="text-red-600">{qnaError}</div>
+              ) : !qnas.length ? (
+                <div className="text-gray-600">No Q&A available for this topic.</div>
+              ) : (
+                qnas.map((qna) => (
+                  <div
+                    key={qna._id}
+                    className="bg-white p-6 rounded-lg shadow-md border border-gray-100"
+                  >
+                    <h4 className="text-lg font-semibold mb-2 text-gray-800">
+                      Question: {qna.question}
+                    </h4>
+                    <p className="text-gray-700">Explanation: {qna.answer}</p>
+                  </div>
+                ))
+              )}
+            </div>
           </section>
         </main>
       </div>
@@ -290,8 +365,7 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   await dbConnect();
-  const tutorials = await  Tutorial.find().sort({order:-1});
-  console.log(tutorials,'gfgvh')
+  const tutorials = await Tutorial.find({}, 'slug').lean();
 
   const paths = tutorials.map((tutorial) => ({
     params: { slug: tutorial.slug },
@@ -299,21 +373,23 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: false, // Use 'blocking' if you plan to add dynamic content
+    fallback: false,
   };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   await dbConnect();
   const tutorial = await Tutorial.findOne({ slug: params?.slug }).lean();
-  const tutorials = await Tutorial.find().sort({order:1});
-
+  const tutorials = await Tutorial.find({}, '_id title slug order')
+    .sort({ order: 1 })
+    .lean();
 
   return {
     props: {
-      tutorial: JSON.parse(JSON.stringify(tutorial)),
+      tutorial: tutorial ? JSON.parse(JSON.stringify(tutorial)) : null,
       tutorials: JSON.parse(JSON.stringify(tutorials)),
     },
+    revalidate: 60,
   };
 };
 
