@@ -4,13 +4,13 @@ import QnA from "@/models/QnA";
 import Tutorial from "@/models/Tutorial";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  // Allow CORS for eduvia.space
-  res.setHeader("Access-Control-Allow-Origin", "https://eduvia.space");
+  // ✅ CORS headers
+  res.setHeader("Access-Control-Allow-Origin", "*"); // or use "https://www.eduvia.space" for tighter security
   res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (req.method === "OPTIONS") {
-    return res.status(200).end(); // Preflight request
+    return res.status(200).end(); // Handle CORS preflight
   }
 
   if (req.method !== "GET") {
@@ -25,19 +25,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     await dbConnect();
-    console.log(slug, "hhhh");
-
     const tutorial = await Tutorial.findOne({ slug });
 
     if (!tutorial) {
       return res.status(404).json({ message: "Tutorial not found" });
     }
 
-    const topicId = tutorial._id;
-
-    const qnas = await QnA.find({ tutorialSlug: topicId });
-    console.log(qnas, "hai");
-
+    const qnas = await QnA.find({ tutorialSlug: tutorial._id });
     return res.status(200).json({ qnas });
   } catch (error) {
     console.error("Error fetching QnAs:", error);
