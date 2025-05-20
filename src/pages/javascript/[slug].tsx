@@ -68,7 +68,7 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
     setQnaError(null);
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/listQnA?slug=${encodeURIComponent(tutorial.slug)}`,
+        `https://eduvia.space/api/listQnA?slug=${encodeURIComponent(tutorial.slug)}`,
         {
           headers: {
             'Cache-Control': 'no-store',
