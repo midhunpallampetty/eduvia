@@ -8,6 +8,7 @@ import Link from 'next/link';
 import Head from 'next/head';
 import axios from 'axios';
 import Footer from '../components/Footer';
+
 interface MCQ {
   question: string;
   options: string[];
@@ -46,6 +47,8 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
   const [qnas, setQnas] = useState<QnA[]>([]);
   const [isLoadingQnas, setIsLoadingQnas] = useState<boolean>(false);
   const [qnaError, setQnaError] = useState<string | null>(null);
+  // New state for sidebar toggle on mobile
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
   // Initialize MCQ states
   useEffect(() => {
@@ -73,18 +76,15 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
           headers: {
             'Cache-Control': 'no-store',
           },
-          withCredentials: false, // unless using cookies/session
+          withCredentials: false,
         }
       );
-    
       const data = response.data;
-    
       if (!data.qnas || !Array.isArray(data.qnas)) {
         throw new Error('Invalid Q&A data format');
       }
-    
       setQnas(data.qnas);
-    }  catch (error) {
+    } catch (error) {
       console.error('Error fetching Q&A:', error);
       setQnaError('Failed to load Q&A. Please try again later.');
     } finally {
@@ -112,6 +112,11 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
     );
   };
 
+  // Toggle sidebar visibility
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   if (!tutorial) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -123,6 +128,7 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
   return (
     <>
       <Head>
+        {/* Head content remains unchanged */}
         <title>{`${tutorial.title} | JavaScript Tutorial`}</title>
         <meta
           name="description"
@@ -219,7 +225,22 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
 
       <Navbar />
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 text-gray-800 font-inter flex">
-        <aside className="w-64 h-screen fixed bg-white shadow-xl p-6 overflow-y-auto scrollbar-thin scrollbar-thumb-green-400 scrollbar-track-gray-100">
+        {/* Hamburger Menu Button for Mobile */}
+        <button
+          className="md:hidden fixed top-4 left-4 z-50 bg-green-500 text-white p-2 rounded-lg focus:outline-none"
+          onClick={toggleSidebar}
+          aria-label="Toggle sidebar"
+        >
+          {isSidebarOpen ? '✕' : '☰'}
+        </button>
+
+        {/* Sidebar: Hidden on mobile, visible on md+ screens */}
+        <aside
+          className={`w-64 h-screen bg-white shadow-xl p-6 overflow-y-auto scrollbar-thin scrollbar-thumb-green-400 scrollbar-track-gray-100
+            fixed top-0 left-0 z-40 transform transition-transform duration-300
+            ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+            md:translate-x-0 md:w-64 md:fixed`}
+        >
           <h2 className="text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-600">
             JS Tutorial
           </h2>
@@ -232,6 +253,7 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
                       ? 'bg-green-50 border-l-4 border-green-500 text-green-600'
                       : 'hover:bg-gray-50 hover:border-l-4 hover:border-green-300'
                   }`}
+                  onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click in mobile
                 >
                   {tut.title}
                 </div>
@@ -240,7 +262,11 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
           </nav>
         </aside>
 
-        <main className="ml-64 w-full p-10 space-y-14">
+        {/* Main Content: Adjust margin based on sidebar visibility */}
+        <main
+          className={`w-full p-10 space-y-14 transition-all duration-300
+            md:ml-64 ${isSidebarOpen ? 'ml-64' : 'ml-0'}`}
+        >
           <h1 className="text-4xl font-bold mt-20">
             JavaScript Tutorial <span className="ml-4 text-green-500 text-3xl">✦</span>
           </h1>
@@ -340,7 +366,7 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
 
             <div className="mt-12 space-y-8">
               <h3 className="text-2xl font-bold text-gray-800 border-b pb-2">
-                Questions & Answers Related 
+                Questions & Answers Related
               </h3>
               {isLoadingQnas ? (
                 <div className="text-gray-600">Loading Q&A...</div>
@@ -365,7 +391,7 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
           </section>
         </main>
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 };
