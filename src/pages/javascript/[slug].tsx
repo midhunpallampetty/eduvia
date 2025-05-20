@@ -7,7 +7,6 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import Link from 'next/link';
 import Head from 'next/head';
 import axios from 'axios';
-import Footer from '../components/Footer';
 interface MCQ {
   question: string;
   options: string[];
@@ -68,7 +67,7 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
     setQnaError(null);
     try {
       const response = await axios.get(
-        `https://eduvia.space/api/listQnA?slug=${encodeURIComponent(tutorial.slug)}`,
+        `https://www.eduvia.space/api/listQnA?slug=${encodeURIComponent(tutorial.slug)}`,
         {
           headers: {
             'Cache-Control': 'no-store',
@@ -241,7 +240,7 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
         </aside>
 
         <main className="ml-64 w-full p-10 space-y-14">
-          <h1 className="text-4xl font-bold mt-20">
+          <h1 className="text-4xl font-bold mb-8">
             JavaScript Tutorial <span className="ml-4 text-green-500 text-3xl">✦</span>
           </h1>
 
@@ -365,8 +364,6 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
           </section>
         </main>
       </div>
-        <Footer/>
-     
     </>
   );
 };
