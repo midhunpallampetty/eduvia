@@ -18,7 +18,9 @@ export default function Navbar() {
   alt="CodeMaster Logo"
   width={50}
   height={50}
+  className="ml-10 sm:ml-0"
 />
+<p className='text-black/60 font-sans text-xl font-extrabold '>Eduvia Space</p>
 
 
           </Link>
