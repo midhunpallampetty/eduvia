@@ -5,7 +5,7 @@ import Tutorial from "@/models/Tutorial";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // ✅ CORS headers
-  res.setHeader("Access-Control-Allow-Origin", "*"); // or use "https://www.eduvia.space" for tighter security
+  res.setHeader("Access-Control-Allow-Origin", "*"); // or use "https://www.eduvia.space" for tighter securit
   res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
