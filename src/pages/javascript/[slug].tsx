@@ -9,6 +9,7 @@ import Head from 'next/head';
 import axios from 'axios';
 import Footer from '../components/Footer';
 
+
 interface MCQ {
   question: string;
   options: string[];
@@ -71,7 +72,7 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
     setQnaError(null);
     try {
       const response = await axios.get(
-        `https://www.eduvia.space/api/listQnA?slug=${encodeURIComponent(tutorial.slug)}`,
+        `http://localhost:3001/api/listQnA?slug=${encodeURIComponent(tutorial.slug)}`,
         {
           headers: {
             'Cache-Control': 'no-store',
@@ -129,6 +130,10 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
     <>
       <Head>
         {/* Head content remains unchanged */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+          rel="stylesheet"
+        />
         <title>{`${tutorial.title} | JavaScript Tutorial`}</title>
         <meta
           name="description"
@@ -224,7 +229,7 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
       </Head>
 
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 text-gray-800 font-inter flex">
+      <div  style={{ fontFamily: "'Rubik', sans-serif",fontWeight:400 }} className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 text-gray-800 font-inter flex">
         {/* Hamburger Menu Button for Mobile */}
         <button
           className="md:hidden fixed top-4 left-4 z-50 bg-green-500 text-white p-2 rounded-lg focus:outline-none"
@@ -263,7 +268,7 @@ const TutorialPage: React.FC<Props> = ({ tutorial, tutorials }) => {
         </aside>
 
         {/* Main Content: Adjust margin based on sidebar visibility */}
-        <main
+        <main   style={{fontSize:25}}
           className={`w-full p-10 space-y-14 transition-all duration-300
             md:ml-64 ${isSidebarOpen ? 'ml-64' : 'ml-0'}`}
         >
